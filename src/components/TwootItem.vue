@@ -1,5 +1,5 @@
 <template>
-  <div class="twoot-item" @click="favouriteTwoot(twoot.id)">
+  <div class="twoot-item">
     <div class="user-profile__twoot">
       <div class="twoot-item__user">@{{ username }}</div>
       <div class="twoot-item__content">
@@ -21,12 +21,6 @@ export default {
       type: Object,
       required: true
     }
-  },
-  methods: {
-    favouriteTwoot(id) {
-      // to pass data from child to parent (on twoot item click)
-      this.$emit('favourite', id)
-    }
   }
 }
 </script>
@@ -40,11 +34,9 @@ export default {
   box-sizing: border-box;
   cursor: pointer;
   transition: all 0.25s ease;
-
   &:hover {
     transform: scale(1.1, 1.1);
   }
-
   .twoot-item__user {
     font-weight: bold;
   }
