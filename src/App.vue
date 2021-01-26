@@ -5,7 +5,7 @@
         Twotter
       </div>
       <div class="navigation__user">
-        {{ user.username }}
+        {{ state.user.username }}
       </div>
     </nav>
     <user-profile />
@@ -19,11 +19,14 @@ export default {
   name: 'App',
   components: { UserProfile },
 
-  data() {
-    return {
+  setup() {
+    const state = {
       user: {
         username: '_alikhan'
       }
+    }
+    return {
+      state
     }
   }
 }
