@@ -25,9 +25,11 @@
 </template>
 
 <script>
-import { reactive } from 'vue'
-import CreateTwootPanel from './CreateTwootPanel.vue'
-import TwootItem from './TwootItem.vue'
+import { reactive, computed } from 'vue'
+import { useRoute } from 'vue-router'
+import { users } from '../assets/users'
+import CreateTwootPanel from '../components/CreateTwootPanel.vue'
+import TwootItem from '../components/TwootItem.vue'
 
 export default {
   name: 'UserProfile',
@@ -37,20 +39,14 @@ export default {
   },
 
   setup() {
+    const route = useRoute()
+
+    const userId = computed(() => route.params.userId)
+
     const state = reactive({
       followers: 0,
-      user: {
-        id: 1,
-        username: '_alikhan',
-        firstName: 'Ali khan',
-        lastName: 'Mehboob',
-        email: 'alikhan@gmail.com',
-        isAdmin: true,
-        twoots: [
-          { id: 1, content: 'Twotter is amazing!' },
-          { id: 2, content: 'This is a Vue Twotter Twoot!' }
-        ]
-      }
+      // get dynamic user by id from the imported file
+      user: users[userId.value - 1] || users[0]
     })
 
     function followUser() {
