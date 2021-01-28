@@ -1,7 +1,9 @@
 import { createRouter, createWebHistory } from 'vue-router'
+import store from '../store'
+import { users } from '../assets/users'
 import Home from '../views/Home.vue'
-import UserProfile from '../views/UserProfile.vue'
-import Admin from '../views/Admin.vue'
+import UserProfile from '../views/UserProfile'
+import Admin from '../views/Admin'
 
 const routes = [
   {
@@ -19,23 +21,27 @@ const routes = [
     name: 'Admin',
     component: Admin,
     meta: {
-      requiredAdmin: true
+      requiresAdmin: true
     }
   }
 ]
 
 const router = createRouter({
-  // we changed createWebHashHistory to createWebHistory to overcome that extra # in url
   history: createWebHistory(),
   routes
 })
 
-// router guard
 router.beforeEach(async (to, from, next) => {
-  const isAdmin = false
-  const requiredAdmin = to.matched.some(record => record.meta.requiredAdmin)
+  const user = store.state.User.user
 
-  if (requiredAdmin && !isAdmin) next({ name: 'Home' })
+  if (!user) {
+    await store.dispatch('User/setUser', users[0])
+  }
+
+  const isAdmin = false
+  const requiresAdmin = to.matched.some(record => record.meta.requiresAdmin)
+
+  if (requiresAdmin && !isAdmin) next({ name: 'Home' })
   else next()
 })
 
